@@ -58,7 +58,7 @@ public:
 
     bool ADDIN_API setMemManager(void *memory_manager_) final;
 
-    long ADDIN_API GetInfo() final { return 2100; };
+    long ADDIN_API GetInfo() final { return 2000; };
 
     void ADDIN_API Done() final {};
 
