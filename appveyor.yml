@@ -1,27 +1,43 @@
 image:
   - Visual Studio 2022
   - Ubuntu
+
 configuration: Release
+
 platform:
   - Win32
   - x64
+
 environment:
   APPVEYOR_YML_DISABLE_PS_LINUX: true
+
 matrix:
   exclude:
     - image: Ubuntu
       TARGET_PLATFORM: Win32
+
 before_build:
 - ps: cmake -B Builds -G "Visual Studio 17 2022" -A $env:PLATFORM
-- ps: ls .\Builds
-- ps: cat .\Builds\SampleAddIn.sln
 - sh: sudo apt install uuid-dev
+
 build:
   verbosity: minimal
+
+after_build:
+  - ps: Push-AppveyorArtifact Builds/Release/SampleAddIn.dll -DeploymentName binaries -FileName SampleAddIn.dll
+  - sh: appveyor PushArtifact SampleAddIn.so -DeploymentName binaries -FileName SampleAddIn.so
+
 for:
 -
   matrix:
     only:
       - image: Ubuntu
   build_script:
-  - cmake -DCMAKE_BUILD_TYPE=Release; cmake --build .
+  - mkdir Builds/Release -p && cd ./Builds/Release
+  - cmake -DCMAKE_BUILD_TYPE=Release ../../; cmake --build .
+on_success:
+  - sh: appveyor UpdateBuild -Version "1.0-$version"
+  - ps: |
+      foreach ($artifactName in $artifacts.keys) {
+        echo $artifacts[$artifactName]
+      } 

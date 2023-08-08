@@ -3,6 +3,7 @@ project(SampleAddIn)
 
 set(CMAKE_CXX_STANDARD 17)
 set(TARGET SampleAddIn)
+set(CMAKE_SHARED_LIBRARY_PREFIX "")
 
 option(CASE_INSENSITIVE "Case insensitive method names" OFF)
 option(STATIC_CRT "Static CRT linkage" OFF)
