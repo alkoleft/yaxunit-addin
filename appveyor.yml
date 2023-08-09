@@ -1,12 +1,12 @@
-image:
-  - Visual Studio 2022
-  - Ubuntu
+# image:
+#   - Visual Studio 2022
+#   - Ubuntu
 
 configuration: Release
 
-platform:
-  - Win32
-  - x64
+# platform:
+#   - Win32
+#   - x64
 
 environment:
   APPVEYOR_YML_DISABLE_PS_LINUX: true
