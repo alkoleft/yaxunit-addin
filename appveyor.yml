@@ -10,14 +10,26 @@ platform:
 
 environment:
   APPVEYOR_YML_DISABLE_PS_LINUX: true
+  matrix:
+    - job_name: Build Linux x64
+      job_group: Build
+      appveyor_build_worker_image: Ubuntu
+    - job_name: Build Windows x86
+      job_group: Build
+      appveyor_build_worker_image: Visual Studio 2022
+    - job_name: Build Windows x64
+      job_group: Build
+      appveyor_build_worker_image: Visual Studio 2022
+    - job_name: Deploy
+      appveyor_build_worker_image: Visual Studio 2022
 
 matrix:
-  exclude:
-    - image: Ubuntu
-      TARGET_PLATFORM: Win32
+  fast_finish: true
+  # exclude:
+  #   - image: Ubuntu
+  #     TARGET_PLATFORM: Win32
 
-before_build:
-- ps: cmake -B Builds -G "Visual Studio 17 2022" -A $env:PLATFORM
+install:
 - sh: sudo apt install uuid-dev
 
 build:
@@ -28,16 +40,33 @@ after_build:
   - sh: appveyor PushArtifact SampleAddIn.so -DeploymentName binaries -FileName SampleAddIn.so
 
 for:
--
-  matrix:
-    only:
-      - image: Ubuntu
-  build_script:
-  - mkdir Builds/Release -p && cd ./Builds/Release
-  - cmake -DCMAKE_BUILD_TYPE=Release ../../; cmake --build .
-on_success:
-  - sh: appveyor UpdateBuild -Version "1.0-$version"
-  - ps: |
-      foreach ($artifactName in $artifacts.keys) {
-        echo $artifacts[$artifactName]
-      } 
+  - matrix:
+      only:
+        - job_name: Build Linux x64
+      build_script:
+        - mkdir Builds/Release -p && cd ./Builds/Release
+        - cmake -DCMAKE_BUILD_TYPE=Release ../../; cmake --build .
+      after_build:
+        - sh: appveyor PushArtifact SampleAddIn.so -DeploymentName binaries -FileName SampleAddIn.so
+  - matrix:
+      only:
+        - job_name: Build Windows x86
+      before_build:
+        - ps: cmake -B Builds -G "Visual Studio 17 2022" -A Win32
+      after_build:
+        - ps: Push-AppveyorArtifact Builds/Release/SampleAddIn.dll -DeploymentName binaries -FileName SampleAddIn-x86.dll
+  - matrix:
+      only:
+        - job_name: Build Windows x86
+      before_build:
+        - ps: cmake -B Builds -G "Visual Studio 17 2022" -A x64
+      after_build:
+        - ps: Push-AppveyorArtifact Builds/Release/SampleAddIn.dll -DeploymentName binaries -FileName SampleAddIn-x64.dll
+  - matrix:
+      only:
+        - job_name: Deploy
+      before_build:
+        - ps: |
+            foreach ($artifactName in $artifacts.keys) {
+              Invoke-WebRequest -Uri $artifacts[$artifactName].url -OutFile $artifacts[$artifactName].path
+            }
