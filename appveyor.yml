@@ -48,6 +48,7 @@ for:
       - cmake -DCMAKE_BUILD_TYPE=Release ../../; cmake --build .
     after_build:
       - sh: appveyor PushArtifact SampleAddIn.so -DeploymentName binaries -FileName SampleAddIn.so
+  
   - matrix:
       only:
         - job_name: Build Windows x86
@@ -55,17 +56,19 @@ for:
       - ps: cmake -B Builds -G "Visual Studio 17 2022" -A Win32
     after_build:
       - ps: Push-AppveyorArtifact Builds/Release/SampleAddIn.dll -DeploymentName binaries -FileName SampleAddIn-x86.dll
+  
   - matrix:
       only:
-        - job_name: Build Windows x86
+        - job_name: Build Windows x64
     before_build:
       - ps: cmake -B Builds -G "Visual Studio 17 2022" -A x64
     after_build:
       - ps: Push-AppveyorArtifact Builds/Release/SampleAddIn.dll -DeploymentName binaries -FileName SampleAddIn-x64.dll
+  
   - matrix:
       only:
         - job_name: Deploy
-    before_build:
+    build_script:
       - ps: |
           foreach ($artifactName in $artifacts.keys) {
             Invoke-WebRequest -Uri $artifacts[$artifactName].url -OutFile $artifacts[$artifactName].path
