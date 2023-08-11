@@ -28,7 +28,7 @@ jobs:
     - uses: actions/upload-artifact@v3
       with:
         name: windows-x86
-        path: ${{github.workspace}}/build      
+        path: ${{github.workspace}}/build/Release/     
 
   build-win-64:
     runs-on: windows-latest
@@ -52,7 +52,7 @@ jobs:
     - uses: actions/upload-artifact@v3
       with:
         name: windows-x64
-        path: ${{github.workspace}}/build    
+        path: ${{github.workspace}}/build/Release/    
 
 
   build-lin:
