@@ -40,7 +40,11 @@ jobs:
 
     - name: Build
       run: cmake --build ${{github.workspace}}/build --parallel
-      
+    - uses: actions/upload-artifact@v3
+      with:
+        name: ${{matrix.os}}-${{matrix.architecture}}
+        path: ${{github.workspace}}/build      
+        
   build-lin:
     runs-on: ubuntu-latest
     
@@ -77,3 +81,7 @@ jobs:
             #-DCMAKE_CXX_STANDARD=${{matrix.cxx_standard}}
     - name: Build
       run: cmake --build ${{github.workspace}}/build --parallel
+    - uses: actions/upload-artifact@v3
+      with:
+        name: linux-x64
+        path: ${{github.workspace}}/build  
