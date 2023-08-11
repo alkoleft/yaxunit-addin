@@ -24,7 +24,7 @@ jobs:
             -A Win32
 
     - name: Build
-      run: cmake --build ${{github.workspace}}/build --parallel
+      run: cmake --build ${{github.workspace}}/build --parallel --config Release
     - uses: actions/upload-artifact@v3
       with:
         name: windows-x86
@@ -48,7 +48,7 @@ jobs:
             -A x64
 
     - name: Build
-      run: cmake --build ${{github.workspace}}/build --parallel
+      run: cmake --build ${{github.workspace}}/build --parallel --config Release
     - uses: actions/upload-artifact@v3
       with:
         name: windows-x64
