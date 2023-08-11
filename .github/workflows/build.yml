@@ -1,0 +1,79 @@
+name: build
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build-win:
+    runs-on: ${{matrix.os}}
+    
+    strategy:
+      matrix:
+        os: [windows-latest]
+        architecture: [x86, x64]
+        build_type: [Release]
+ #       cxx_standard: [11, 14, 17, 20]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+
+    - name: Setup MSVC
+      uses: TheMrMilchmann/setup-msvc-dev@v2
+      with:
+        arch: ${{matrix.architecture}}
+      
+    - name: Configure CMake
+      run: cmake -B ${{github.workspace}}/build
+            -DVULKAN_HPP_SAMPLES_BUILD=ON
+            -DVULKAN_HPP_SAMPLES_BUILD_ONLY_DYNAMIC=ON
+            -DVULKAN_HPP_SAMPLES_BUILD_WITH_LOCAL_VULKAN_HPP=ON
+            -DVULKAN_HPP_TESTS_BUILD=ON
+            -DVULKAN_HPP_TESTS_BUILD_ONLY_DYNAMIC=ON
+            -DVULKAN_HPP_TESTS_BUILD_WITH_LOCAL_VULKAN_HPP=ON
+            -DVULKAN_HPP_PRECOMPILE=OFF
+            -DVULKAN_HPP_RUN_GENERATOR=ON
+            -DCMAKE_BUILD_TYPE=${{matrix.build_type}}
+#            -DCMAKE_CXX_STANDARD=${{matrix.cxx_standard}}
+
+
+    - name: Build
+      run: cmake --build ${{github.workspace}}/build --parallel
+      
+  build-lin:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        build_type: [Release]
+ #       cxx_standard: [11, 14, 17, 20]
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    
+    - name: Install libraries
+      run: sudo apt update && sudo apt install libgl-dev libxcursor-dev libxi-dev libxinerama-dev libxrandr-dev
+
+    - name: Install Ninja
+      uses: ashutoshvarma/setup-ninja@master
+      with:
+        version: 1.11.0
+      
+    - name: Configure CMake
+      run: cmake -B ${{github.workspace}}/build -GNinja
+            -DVULKAN_HPP_SAMPLES_BUILD=ON
+            -DVULKAN_HPP_SAMPLES_BUILD_ONLY_DYNAMIC=ON
+            -DVULKAN_HPP_SAMPLES_BUILD_WITH_LOCAL_VULKAN_HPP=ON
+            -DVULKAN_HPP_TESTS_BUILD=ON
+            -DVULKAN_HPP_TESTS_BUILD_ONLY_DYNAMIC=ON
+            -DVULKAN_HPP_TESTS_BUILD_WITH_LOCAL_VULKAN_HPP=ON
+            -DVULKAN_HPP_RUN_GENERATOR=ON
+            -DCMAKE_CXX_COMPILER=g++-11
+            -DCMAKE_C_COMPILER=gcc-11
+            -DCMAKE_BUILD_TYPE=${{matrix.build_type}}
+            #-DCMAKE_CXX_STANDARD=${{matrix.cxx_standard}}
+    - name: Build
+      run: cmake --build ${{github.workspace}}/build --parallel
