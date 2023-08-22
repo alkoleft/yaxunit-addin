@@ -17,16 +17,16 @@
  *
  */
 
-#ifndef SAMPLEADDIN_H
-#define SAMPLEADDIN_H
+#ifndef YAXUNITADDIN_H
+#define YAXUNITADDIN_H
 
 #include "Component.h"
 
-class SampleAddIn final : public Component {
+class YaxUnitAddIn final : public Component {
 public:
     const char *Version = u8"1.0.0";
 
-    SampleAddIn();
+    YaxUnitAddIn();
 
 private:
     std::string extensionName() override;
@@ -34,4 +34,4 @@ private:
     void sleep(const variant_t &delay);
 };
 
-#endif //SAMPLEADDIN_H
+#endif //YAXUNITADDIN_H

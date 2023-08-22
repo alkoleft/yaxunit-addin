@@ -24,13 +24,13 @@
 #include <string>
 #include <thread>
 
-#include "SampleAddIn.h"
+#include "YaxUnitAddIn.h"
 
-std::string SampleAddIn::extensionName() {
+std::string YaxUnitAddIn::extensionName() {
     return "Sleep";
 }
 
-SampleAddIn::SampleAddIn() {
+YaxUnitAddIn::YaxUnitAddIn() {
 
     // Full featured property registration example
     AddProperty(L"Version", L"ВерсияКомпоненты", [&]() {
@@ -38,11 +38,11 @@ SampleAddIn::SampleAddIn() {
         return std::make_shared<variant_t>(std::move(s));
     });
 
-    AddMethod(L"Sleep", L"Ожидать", this, &SampleAddIn::sleep, {{0, 5}});
+    AddMethod(L"Sleep", L"Ожидать", this, &YaxUnitAddIn::sleep, {{0, 5}});
 }
 
 
-void SampleAddIn::sleep(const variant_t &delay) {
+void YaxUnitAddIn::sleep(const variant_t &delay) {
     using namespace std;
     // It safe to get any type from variant.
     // Exceptions are handled by component API.

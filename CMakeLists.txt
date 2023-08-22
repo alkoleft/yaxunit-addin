@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
-project(SampleAddIn)
+project(YaxUnitAddIn)
 
 set(CMAKE_CXX_STANDARD 17)
-set(TARGET SampleAddIn)
+set(TARGET YaxUnitAddIn)
 set(CMAKE_SHARED_LIBRARY_PREFIX "")
 
 option(CASE_INSENSITIVE "Case insensitive method names" OFF)
@@ -16,8 +16,8 @@ list(APPEND SOURCES
         src/exports.cpp
         src/Component.cpp
         src/Component.h
-        src/SampleAddIn.cpp
-        src/SampleAddIn.h)
+        src/YaxUnitAddIn.cpp
+        src/YaxUnitAddIn.h)
 
 if (ANDROID)
     list(APPEND SOURCES

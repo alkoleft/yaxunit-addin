@@ -1,4 +1,4 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/uf3bq0j5xgdn3t2a/branch/master?svg=true)](https://ci.appveyor.com/project/alkoleft/yaxunit-addin/branch/master)
+[![Build status](https://github.com/alkoleft/yaxunit-addin/actions/workflows/build.yml/badge.svg)](https://github.com/alkoleft/yaxunit-addin/actions/workflows/build.yml)
 
 # YaxUnit-Addin
 

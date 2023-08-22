@@ -20,7 +20,7 @@
 #include <ComponentBase.h>
 #include <types.h>
 
-#include "SampleAddIn.h"
+#include "YaxUnitAddIn.h"
 
 #ifdef _WINDOWS
 #pragma warning (disable : 4311 4302)
@@ -36,7 +36,7 @@ long GetClassObject(const WCHAR_T *clsName, IComponentBase **pInterface) {
     if (!*pInterface) {
         auto cls_name = std::u16string(reinterpret_cast<const char16_t *>(clsName));
         if (cls_name == u"Sleep") {
-            *pInterface = new SampleAddIn;
+            *pInterface = new YaxUnitAddIn;
         }
         return (long) *pInterface;
     }
