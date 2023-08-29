@@ -70,10 +70,7 @@ jobs:
         version: 1.11.0
       
     - name: Configure CMake
-      run: cmake -B ${{github.workspace}}/build -GNinja
-            -DCMAKE_CXX_COMPILER=g++-10
-            -DCMAKE_C_COMPILER=gcc-10
-            -DCMAKE_BUILD_TYPE=Release
+      run: cmake -B ${{github.workspace}}/build -GNinja -DCMAKE_CXX_COMPILER=g++-9 -DCMAKE_C_COMPILER=gcc-9 -DCMAKE_BUILD_TYPE=Release
     - name: Build
       run: cmake --build ${{github.workspace}}/build --parallel
     - uses: actions/upload-artifact@v3
