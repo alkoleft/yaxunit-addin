@@ -61,20 +61,20 @@ jobs:
       with:
         submodules: recursive
     
-    - name: Install libraries
-      run: sudo apt update && sudo apt install libgl-dev libxcursor-dev libxi-dev libxinerama-dev libxrandr-dev
+    - name: Install gcc
+      run: sudo apt install g++-10 -y
 
     - name: Install Ninja
       uses: ashutoshvarma/setup-ninja@master
       with:
         version: 1.11.0
       
-    - name: Install gcc
-      run: sudo apt install g++-10 -y
     - name: Configure CMake
       run: cmake -B ${{github.workspace}}/build -GNinja -DCMAKE_CXX_COMPILER=g++-10 -DCMAKE_C_COMPILER=gcc-10 -DCMAKE_BUILD_TYPE=Release
+    
     - name: Build
       run: cmake --build ${{github.workspace}}/build --parallel
+    
     - uses: actions/upload-artifact@v3
       with:
         name: linux-x64
