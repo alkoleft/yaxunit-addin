@@ -17,21 +17,22 @@
  *
  */
 
-#ifndef YAXUNITADDIN_H
-#define YAXUNITADDIN_H
+#ifndef COMMONADDIN_H
+#define COMMONADDIN_H
 
 #include "Component.h"
 
-class YaxUnitAddIn final : public Component {
+class CommonAddIn final : public Component {
 public:
-    const char *Version = u8"1.0.0";
+    const char *Version = u8"1.0.1";
 
-    YaxUnitAddIn();
+    CommonAddIn();
 
 private:
     std::string extensionName() override;
 
     void sleep(const variant_t &delay);
+    void print(const variant_t &msg);
 };
 
-#endif //YAXUNITADDIN_H
+#endif //COMMONADDIN_H

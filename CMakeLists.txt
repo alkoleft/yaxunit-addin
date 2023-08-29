@@ -16,8 +16,8 @@ list(APPEND SOURCES
         src/exports.cpp
         src/Component.cpp
         src/Component.h
-        src/YaxUnitAddIn.cpp
-        src/YaxUnitAddIn.h)
+        src/CommonAddIn.cpp
+        src/CommonAddIn.h)
 
 if (ANDROID)
     list(APPEND SOURCES
